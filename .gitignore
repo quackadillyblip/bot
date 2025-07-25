@@ -1,0 +1,12 @@
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+
+# Ignore screenshots (optional)
+screenshots/
+
+# Ignore VS Code settings (optional)
+.vscode/

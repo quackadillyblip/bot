@@ -1,0 +1,9 @@
+# Requirements for Last War Survival Bot
+# Tested with:
+# - Windows 11
+# - MEmu emulator
+# - Python 3.13.5
+# - ADB installed and added to PATH, ADB is a system dependency, installed via platform tools or emulator tools.
+
+numpy==1.26.4 -- array operations
+opencv-python==4.8.1.78 -- image recognition

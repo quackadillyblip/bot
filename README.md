@@ -1,7 +1,7 @@
 # Last War Survival Bot
 
 **Author:** Anonymous Developer  
-**Contact:** dindunuffin1234@proton.me
+**Contact:** dindunuffin1234@proton.me  
 **Environment:**  
 - Windows 11  
 - MEmu emulator  

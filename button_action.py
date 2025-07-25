@@ -79,8 +79,7 @@ class ButtonAction:
         print(f"[{self.name}] Tapped at position: ({x}, {y})")
 
     def perform_actions(self):
-        screenshot_path = 'screen.png'
-        self.adb_screencap(screenshot_path)
+        screenshot_path = self.adb_screencap()  # will return full path inside screenshots/
         pos = self.find_button(screenshot_path)
         if pos:
             print(f"[{self.name}] ✅ Button found at {pos}, tapping...")

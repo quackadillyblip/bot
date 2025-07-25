@@ -3,6 +3,7 @@ import numpy as np
 import subprocess
 import time
 import os
+import sys
 
 class ButtonAction:
     def __init__(self, template_path, name, possible_positions=None, save_screenshots=False):
@@ -14,21 +15,26 @@ class ButtonAction:
             os.makedirs('screenshots', exist_ok=True)
 
     def adb_screencap(self, output_path=None):
+        CREATE_NO_WINDOW = 0x08000000 if sys.platform == 'win32' else 0
+
         if output_path is None:
             timestamp = time.strftime("%Y%m%d-%H%M%S")
             output_path = os.path.join('screenshots', f'screen_{timestamp}.png')
-        
-        # Always ensure output_path is within screenshots
-        if not output_path.startswith('screenshots'):
-            output_path = os.path.join('screenshots', output_path)
-        
-        result = subprocess.run(['adb', 'exec-out', 'screencap', '-p'], stdout=subprocess.PIPE)
+
+        # Make sure screenshots folder exists
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+        result = subprocess.run(
+            ['adb', 'exec-out', 'screencap', '-p'],
+            stdout=subprocess.PIPE,
+            creationflags=CREATE_NO_WINDOW
+        )
         with open(output_path, 'wb') as f:
             f.write(result.stdout)
-        
+
         if self.save_screenshots:
             print(f"[{self.name}] Screenshot saved as {output_path}")
-        
+
         return output_path
 
 
@@ -75,7 +81,11 @@ class ButtonAction:
                 return None
 
     def adb_tap(self, x, y):
-        subprocess.run(['adb', 'shell', 'input', 'tap', str(x), str(y)])
+        CREATE_NO_WINDOW = 0x08000000 if sys.platform == 'win32' else 0
+        subprocess.run(
+            ['adb', 'shell', 'input', 'tap', str(x), str(y)],
+            creationflags=CREATE_NO_WINDOW
+        )
         print(f"[{self.name}] Tapped at position: ({x}, {y})")
 
     def perform_actions(self):

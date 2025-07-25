@@ -7,6 +7,12 @@ class HelpButtonAction(ButtonAction):
             # Add known button positions here if any, e.g. (x, y)
         ]
         super().__init__('templates/button-help.png', 'HelpButton', possible_positions, save_screenshots)
+class ClaimButtonAction(ButtonAction):
+    def __init__(self, save_screenshots=False):
+        possible_positions = [
+            # Add known button positions here if any, e.g. (x, y)
+        ]
+        super().__init__('templates/button-claim.png', 'ClaimButton', possible_positions, save_screenshots)
 
     # You can add extra actions here if needed
 
@@ -14,10 +20,12 @@ class HelpButtonAction(ButtonAction):
 if __name__ == "__main__":
     save_screenshots = False
     help_button = HelpButtonAction(save_screenshots=save_screenshots)
+    claim_button = ClaimButtonAction(save_screenshots=save_screenshots)
 
     while True:
         found = help_button.perform_actions()
+        found = claim_button.perform_actions()
         if found:
             # Additional logic after tap can be placed here
             pass
-        time.sleep(0.5)
+        time.sleep(0.01)

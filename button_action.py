@@ -17,12 +17,16 @@ class ButtonAction:
     def adb_screencap(self, output_path=None):
         CREATE_NO_WINDOW = 0x08000000 if sys.platform == 'win32' else 0
 
-        if output_path is None:
+        # Always ensure screenshots folder exists
+        os.makedirs('screenshots', exist_ok=True)
+
+        if self.save_screenshots:
+            # Save with timestamped filename
             timestamp = time.strftime("%Y%m%d-%H%M%S")
             output_path = os.path.join('screenshots', f'screen_{timestamp}.png')
-
-        # Make sure screenshots folder exists
-        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        else:
+            # Overwrite single file
+            output_path = os.path.join('screenshots', 'screen.png')
 
         result = subprocess.run(
             ['adb', 'exec-out', 'screencap', '-p'],
@@ -36,6 +40,7 @@ class ButtonAction:
             print(f"[{self.name}] Screenshot saved as {output_path}")
 
         return output_path
+
 
 
 
@@ -102,5 +107,5 @@ class ButtonAction:
             time.sleep(1)
             return True
         else:
-            print(f"[{self.name}] ❌ Button not found.")
+            # print(f"[{self.name}] ❌ Button not found.")
             return False

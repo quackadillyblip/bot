@@ -70,15 +70,20 @@ class ButtonAction:
                 if len(loc[0]) > 0:
                     pt = (x_start + loc[1][0], y_start + loc[0][0])
                     return pt
-            return None
-        else:
-            res = cv2.matchTemplate(img_gray, template_gray, cv2.TM_CCOEFF_NORMED)
-            loc = np.where(res >= threshold)
-            if len(loc[0]) > 0:
-                pt = (loc[1][0], loc[0][0])
-                return pt
-            else:
-                return None
+
+        # If not found in known positions, search entire image
+        res = cv2.matchTemplate(img_gray, template_gray, cv2.TM_CCOEFF_NORMED)
+        loc = np.where(res >= threshold)
+        if len(loc[0]) > 0:
+            pt = (loc[1][0], loc[0][0])
+            # Add new found position for faster future searches
+            if pt not in self.possible_positions:
+                self.possible_positions.append(pt)
+                print(f"[{self.name}] New position added to possible_positions: {pt}")
+            return pt
+
+        return None
+
 
     def adb_tap(self, x, y):
         CREATE_NO_WINDOW = 0x08000000 if sys.platform == 'win32' else 0
